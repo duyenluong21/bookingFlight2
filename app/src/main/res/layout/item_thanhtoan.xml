@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:elevation="4dp"
+    android:background="@color/white"
+    app:cardCornerRadius="10dp">
+
+    <!-- LinearLayout lớn chứa 2 LinearLayout con -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- LinearLayout con 1 hiển thị Ngày thanh toán -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngày thanh toán: "
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <!-- TextView cho ngày thanh toán -->
+            <TextView
+                android:id="@+id/txtNgaytt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="txtThanhToan"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="4dp" />
+
+        </LinearLayout>
+
+        <!-- LinearLayout con 2 hiển thị Số tiền thanh toán -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Giờ thanh toán: "
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <!-- TextView cho tổng tiền thanh toán -->
+            <TextView
+                android:id="@+id/txtGiott"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="txtGiott"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="4dp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Số tiền đã thanh toán: "
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <!-- TextView cho tổng tiền thanh toán -->
+            <TextView
+                android:id="@+id/txtTientt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="txtTien"
+                android:textSize="16sp"
+                android:textColor="@color/greendam"
+                android:layout_marginStart="4dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

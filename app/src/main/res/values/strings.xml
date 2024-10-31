@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">BookingFlight</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Mật khẩu</string>
+    <string name="signuphere">Chưa có tài khoản? Hãy đăng kí ngay!</string>
+    <string name="signup">Đăng ký tài khoản</string>
+    <string name="fullname">Họ và tên</string>
+    <string name="email">Email</string>
+    <string name="loginhere">Đã có tài khoản? Đăng nhập ngay!</string>
+    <string name="diemden">Điểm đến</string>
+    <string name="diemdi">Điểm đi</string>
+    <string name="khoihanh">Ngày khởi hành </string>
+    <string name="ngayve">Ngày trở về </string>
+    <string name="country_prompt">Lựa chọn</string>
+    <string name="map_api">AIzaSyDlrAXw5AgUrFOrLZJC8RcK8ADQ4Vb_Jaw</string>
+</resources>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="58dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#4296D8"
+        android:padding="12dp"
+        android:src="@drawable/ic_backbutton" />
+    <TextView
+        android:id="@+id/ttcanhan"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:text="Thông tin cá nhân"
+        android:layout_marginStart="50dp"
+        android:background="#4296D8"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="58dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#EDEDED">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_xl">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvUpcomingBooking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        card_view:cardBackgroundColor="@color/white"
+        card_view:cardCornerRadius="@dimen/cardview_default_radius"
+        card_view:cardElevation="@dimen/cardview_default_elevation"
+        card_view:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_small">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small"
+                android:text="HÀNH KHÁCH"
+                android:textColor="@color/dividerLight" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small">
+                <EditText
+                    android:id="@+id/txHovaTen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/prellimtextbg"
+                    android:drawablePadding="@dimen/padding_large"
+                    android:textSize="15dp"
+                    />
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small"
+                android:text="EMAIL"
+                android:textColor="@color/dividerLight" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small">
+
+                <EditText
+                    android:id="@+id/txEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/prellimtextbg"
+                    android:drawablePadding="@dimen/padding_large"
+                    android:textColorHint="@color/white20"
+                    android:textSize="@dimen/text_l" />
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small"
+                android:text="NGÀY SINH"
+                android:textColor="@color/dividerLight" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small">
+
+                <EditText
+                    android:id="@+id/txNgaySinh"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/prellimtextbg"
+                    android:drawablePadding="@dimen/padding_large"
+                    android:textColorHint="@color/white20"
+                    android:textSize="@dimen/text_l" />
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small"
+                android:text="GIỚI TÍNH"
+                android:textColor="@color/dividerLight" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small">
+
+                <EditText
+                    android:id="@+id/txGioitinh"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/prellimtextbg"
+                    android:drawablePadding="@dimen/padding_large"
+                    android:textColorHint="@color/white20"
+                    android:textSize="@dimen/text_l" />
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small"
+                android:text="ĐỊA CHỈ"
+                android:textColor="@color/dividerLight" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small">
+
+                <EditText
+                    android:id="@+id/txDiaChi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/prellimtextbg"
+                    android:drawablePadding="@dimen/padding_large"
+                    android:textColorHint="@color/white20"
+                    android:textSize="@dimen/text_l" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small"
+                android:text="SỐ ĐIỆN THOẠI"
+                android:textColor="@color/dividerLight" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small">
+
+                <EditText
+                    android:id="@+id/txSoDienThoai"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/prellimtextbg"
+                    android:drawablePadding="@dimen/padding_large"
+                    android:textColorHint="@color/white20"
+                    android:textSize="@dimen/text_l" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <Button
+        android:id="@+id/btnBooking"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:text="Cập nhật thông tin"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="90dp"
+        android:textColor="@color/white"
+        app:backgroundTint="@null"
+        android:background="@drawable/custom_button">
+    </Button>
+
+    </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

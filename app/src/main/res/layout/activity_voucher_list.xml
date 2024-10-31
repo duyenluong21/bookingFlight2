@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E4EEEEEE">
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="58dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#4296D8"
+        android:padding="12dp"
+        android:src="@drawable/ic_backbutton" />
+    <TextView
+        android:id="@+id/ttvoucher"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:text="Chọn khuyến mãi"
+        android:layout_marginStart="50dp"
+        android:background="#4296D8"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+    <!-- RecyclerView để hiển thị kết quả -->
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:id="@+id/recyclerViewVoucher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:padding="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"/>
+    <Button
+        android:id="@+id/btnClickVoucher"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Áp dụng mã giảm giá"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/custom_button"
+        app:backgroundTint="@null"
+        />
+
+</RelativeLayout>

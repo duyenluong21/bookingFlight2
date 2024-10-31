@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView_read"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- LinearLayout for image and text -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal">
+
+                <!-- ImageView for icon or image -->
+                <ImageView
+                    android:id="@+id/imgvoucher"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:src="@drawable/img_voucher"
+                    android:layout_marginRight="10dp"
+                    android:contentDescription="Icon" />
+
+                <!-- Vertical LinearLayout for text content -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Khuyến mãi giảm -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Khuyến mãi giảm: "
+                            android:textSize="17dp"
+                            android:textStyle="bold" />
+
+                        <!-- Dynamic data for voucher -->
+                        <TextView
+                            android:id="@+id/txtDiscount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="15"
+                            android:textSize="17dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="%"
+                            android:textSize="17dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Mã khuyến mãi -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mã khuyến mãi: "
+                            android:textSize="16dp" />
+
+                        <!-- Dynamic data for mã khuyến mãi -->
+                        <TextView
+                            android:id="@+id/txtCode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ABC123"
+                            android:textSize="16dp" />
+                    </LinearLayout>
+
+                    <!-- Mã khuyến mãi -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Dành cho: "
+                            android:textSize="15dp" />
+
+                        <!-- Dynamic data for mã khuyến mãi -->
+                        <TextView
+                            android:id="@+id/txtTrangThai"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Khách hàng mới"
+                            android:textSize="15dp"
+                            android:textColor="#FF3366"/>
+                    </LinearLayout>
+                    <!-- Hết hạn ngày -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hết hạn ngày: "
+                            android:textSize="14dp"
+                            android:textColor="@color/xamnhat"/>
+
+                        <!-- Dynamic data for hết hạn ngày -->
+                        <TextView
+                            android:id="@+id/txtNgayHetHan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="30/08/2024"
+                            android:textSize="14dp"
+                            android:textColor="@color/xamnhat"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- RadioButton positioned in the center vertically on the right -->
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:checked="false" />
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

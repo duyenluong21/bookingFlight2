@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity">
+
+    <!-- VideoView làm nền -->
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:layout_marginTop="320dp"
+        android:text="Đăng nhập để có trải nghiệm tốt hơn"/>
+    <!-- Nội dung của bạn -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/transparent"
+        android:paddingTop="340dp"
+        android:gravity="center">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="20dp"
+            android:background="@drawable/custom_edittext">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="340dp"
+                android:layout_gravity="fill_horizontal"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    android:id="@+id/loginText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Đăng nhập"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/custom_edittext"
+                    android:drawableLeft="@drawable/ic_email"
+                    android:drawablePadding="8dp"
+                    android:hint="Email"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:textColorHighlight="@color/cardview_dark_background" />
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/custom_edittext"
+                    android:drawableLeft="@drawable/ic_password"
+                    android:drawablePadding="8dp"
+                    android:hint="Mật khẩu"
+                    android:inputType="textPassword"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:textColorHighlight="@color/cardview_dark_background" />
+
+                <Button
+                    android:id="@+id/loginButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/custom_button"
+                    android:text="Đăng nhập"
+                    android:textSize="18sp"
+                    app:backgroundTint="@null"
+                    app:cornerRadius="20dp" />
+
+                <TextView
+                    android:id="@+id/signupText"
+                    android:layout_width="324dp"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="Chưa có tài khoản ? Đăng ký ngay!"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</FrameLayout>

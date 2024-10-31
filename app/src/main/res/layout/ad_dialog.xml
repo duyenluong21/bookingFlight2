@@ -1,0 +1,37 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <!-- Hình ảnh quảng cáo -->
+    <ImageView
+        android:id="@+id/imgAd"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        /> <!-- Đây là ảnh quảng cáo -->
+
+    <!-- Nút đóng (X) nằm trên ảnh, ở góc trên bên phải -->
+    <ImageButton
+        android:id="@+id/btnClose"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end|top"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        android:src="@drawable/ic_cancel" /> <!-- Icon X để đóng modal -->
+
+    <!-- Nút Xem Chi Tiết nằm dưới cùng của ảnh -->
+    <Button
+        android:id="@+id/btnViewDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đặt vé ngay"
+        android:textColor="@android:color/black"
+        android:background="#80FFFFFF"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"/>
+        />
+
+</FrameLayout>

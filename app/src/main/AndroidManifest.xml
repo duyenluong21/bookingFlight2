@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!--quyền truy cập của thiết bị-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Bookingflight"
+        tools:targetApi="31">
+        <service
+            android:name=".activity.MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".activity.Welcome"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="your-path"
+                    android:scheme="appflightbooking" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.LocationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.VoucherActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.PayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Home"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="appflightbooking"
+                    android:host="home" /> <!-- Sử dụng 'home' làm your-path -->
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.Editpassword"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Editinfo"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Booked"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SuccessTicket"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Ticket"
+            android:exported="false" />
+        <activity
+            android:name=".activity.DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".model.Result"
+            android:exported="false" />
+        <activity
+            android:name=".retrofit.ResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.LoginProfile"
+            android:exported="false" />
+        <activity
+            android:name=".activity.YourSearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Profile"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Login"
+            android:exported="false" />
+        <activity
+            android:name=".activity.chatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.VoucherHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AdDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.NotificationActivity"
+            android:exported="false" />
+        <provider
+            android:name=".activity.AirportSuggestion"
+            android:authorities="com.example.bookingflight.activity.AirportSuggestion"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_api" />
+    </application>
+
+</manifest>

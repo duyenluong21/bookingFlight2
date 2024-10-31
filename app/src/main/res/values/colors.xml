@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <!--    <color name="colorAccent">#000000</color>-->
+    <color name="green">#00FF00</color>
+    <color name="greendam">#006400</color>
+
+    <color name="xamtb">#808080</color>
+
+    <color name="xamdam">#404040</color>
+    <color name="blue_bg">#00B2EE</color>
+    <color name="xamnhat">#C0C0C0</color>
+
+    <color name="xambddam">#696969</color>
+    <color name="lavender">#8692f7</color>
+
+    <color name="colorPrimary">#13151F</color><!--25262F-->
+    <color name="colorPrimaryDark">#13151F</color>
+    <color name="colorAccent">#D3FAED</color>
+
+    <!--other bg colors-->
+    <color name="editbg">#1D1F2B</color>
+
+    <color name="white20">#20FFFFFF</color>
+
+    <color name="black80">#CC151515</color>
+    <color name="mdtp_accent_color">#009688</color>
+    <color name="mdtp_accent_color_dark">#00796b</color>
+
+    <!--background color-->
+    <color name="colorBackground">#dedcde</color>
+    <color name="spinnerbg">#eeeeee</color>
+    <color name="arrowbg">#eeeeee</color>
+    <color name="checkbg">#68EADD</color>
+    <color name="cardbg">#1D1F2B</color>
+    <color name="commonbg">#272935</color>
+    <color name="spinnerbgnew">#25262F</color>
+    <!--bottombar color-->
+    <color name="bottombar">#303038</color>
+
+    <!--for bottom bar icon bg-->
+    <color name="icon_normal">#999</color>
+    <color name="icon_selected">@color/colorAccent</color>
+
+    <!--divider color-->
+    <color name="dividerLight">#999999</color>
+    <color name="dividerDark">#555555</color>
+
+    <color name="card_background">#ffffff</color>
+    <color name="stroke">#CCCCCC</color>
+
+    <color name="transperent">#00ffffff</color>
+    <color name="purple">#EC925D</color>
+    <color name="purple_200">#4CAF50</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="mauxanhnhat">#80A4CB</color>
+</resources>

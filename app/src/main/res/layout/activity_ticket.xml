@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/nen02">
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_xl">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvUpcomingBooking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="@dimen/cardview_default_radius"
+                card_view:cardElevation="@dimen/cardview_default_elevation"
+                card_view:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/padding_large">
+
+                    <TextView
+                        android:id="@+id/txThongTin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_large"
+                        android:text="Xác nhận thông tin"
+                        android:textSize="22dp"
+                        android:textColor="@color/black"
+                        android:textAlignment="center"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small"
+                        android:text="HỌ VÀ TÊN"
+                        android:textColor="@color/dividerLight" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small">
+                        <TextView
+                            android:id="@+id/txHovaTen"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/prellimtextbg"
+                            android:drawablePadding="@dimen/padding_large"
+                            android:textSize="@dimen/text_l" />
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small"
+                        android:text="NGÀY SINH"
+                        android:textColor="@color/dividerLight" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small">
+
+                        <TextView
+                            android:id="@+id/txNgaySinh"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/prellimtextbg"
+                            android:drawablePadding="@dimen/padding_large"
+                            android:textColorHint="@color/white20"
+                            android:textSize="@dimen/text_l" />
+
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small"
+                        android:text="ĐỊA CHỈ"
+                        android:textColor="@color/dividerLight" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small">
+
+                        <EditText
+                            android:id="@+id/txDiaChi"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/prellimtextbg"
+                            android:drawablePadding="@dimen/padding_large"
+                            android:textColorHint="@color/white20"
+                            android:textSize="@dimen/text_l" />
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small"
+                        android:text="SỐ ĐIỆN THOẠI"
+                        android:textColor="@color/dividerLight" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small">
+
+                        <EditText
+                            android:id="@+id/txSoDienThoai"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/prellimtextbg"
+                            android:drawablePadding="@dimen/padding_large"
+                            android:textColorHint="@color/white20"
+                            android:textSize="@dimen/text_l" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardBackgroundColor="@color/white"
+                card_view:cardCornerRadius="@dimen/cardview_default_radius"
+                card_view:cardElevation="@dimen/cardview_default_elevation"
+                card_view:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/padding_large">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small"
+                        android:text="THÔNG TIN CHUYẾN BAY"
+                        android:textColor="@color/dividerLight" />
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:padding="@dimen/padding_small">-->
+
+<!--                        <ImageView-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="5dp"-->
+<!--                            android:layerType="software"-->
+<!--                            android:src="@drawable/dotted" />-->
+<!--                    </LinearLayout>-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/padding_large">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="@dimen/padding_small">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/padding_small"
+                                android:text="Chọn số lượng"
+                                android:textAllCaps="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_small" />
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+
+                                <EditText
+                                    android:id="@+id/txSoLuong"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="3"
+                                    android:gravity="center"
+                                    android:text="0"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/dividerLight"
+                                    android:textSize="@dimen/text_l" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="0.5dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/dividerLight" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="@dimen/padding_small">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/padding_small"
+                                android:text="Chọn loại vé"
+                                android:textAllCaps="true"
+                                android:textColor="@color/dividerLight"
+                                android:textSize="@dimen/text_small" />
+
+                            <Spinner
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/spinnerLoaiVe"
+                                android:padding="@dimen/padding_small"
+                                android:textColor="@color/dividerLight"
+                                android:textSize="@dimen/text_small" />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small">
+
+                        <TextView
+                            android:id="@+id/placeNameTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/prellimtextbg"
+                            android:drawablePadding="@dimen/padding_large"
+                            android:textSize="@dimen/text_l" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small">
+
+                        <TextView
+                            android:id="@+id/descriptionTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/prellimtextbg"
+                            android:drawablePadding="@dimen/padding_large"
+                            android:textSize="@dimen/text_l" />
+
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/btnVoucher"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Chọn khuyến mãi để giảm giá"
+                        android:textSize="16dp"
+                        android:textColor="@color/green"
+                        android:textAlignment="textEnd"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="KHUYẾN MÃI"
+                        android:textColor="@color/dividerLight"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small">
+                        <TextView
+                            android:id="@+id/discount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/prellimtextbg"
+                            android:drawablePadding="@dimen/padding_large"
+                            android:textSize="@dimen/text_l"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small"
+                        android:text="TỔNG THANH TOÁN"
+                        android:textColor="@color/dividerLight" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/padding_small">
+                        <TextView
+                            android:id="@+id/descriptionTextView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/prellimtextbg"
+                            android:drawablePadding="@dimen/padding_large"
+                            android:textSize="@dimen/text_l"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/padding_small">
+
+                <Button
+                    android:id="@+id/btnBooking"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Thanh toán"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@null"
+                    android:background="@drawable/custom_button">
+                </Button>
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
+
+
+
+
+

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#8666CCFF">
+
+    <!-- Phần giá cả và phí bổ sung -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quy định về giá cả và phí bổ sung"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textColor="#137ACC"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hạng phổ thông"
+        android:drawableLeft="@drawable/ic_price"
+        android:textColor="#152897"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Giá cả: 10 USD"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Loại tiền tệ: USD"
+        android:layout_marginBottom="4dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hạng thương gia/Cao cấp"
+        android:drawableLeft="@drawable/ic_price"
+        android:textColor="#152897"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Giá cả: 20 USD"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Loại tiền tệ: USD"
+        android:layout_marginBottom="4dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Phí bổ sung:"
+        android:drawableLeft="@drawable/ic_price"
+        android:textColor="#152897"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- Oversized: 5 USD"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- Overweight: 2 USD per kg over limit"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Phần hình thức hành lý -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quy định về hình thức hành lý"
+        android:textColor="#137ACC"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hành lý xách tay:"
+        android:drawableLeft="@drawable/ic_bag"
+        android:textSize="18sp"
+        android:textColor="#152897"
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- Kích thước tối đa: 22 x 14 x 9 inches"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- Trọng lượng tối đa: 7 kg"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hành lý đã đăng ký:"
+        android:drawableLeft="@drawable/ic_bag"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#152897"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- Kích thước tối đa: 62 linear inches"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- Trọng lượng tối đa: 23 kg"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Phần trọng lượng hành lý -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quy định về trọng lượng hành lý"
+        android:textColor="#137ACC"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Trọng lượng tổng cộng tối đa: 30 kg"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Phí bổ sung trọng lượng: 3 USD per kg"
+        android:layout_marginBottom="16dp"/>
+</LinearLayout>

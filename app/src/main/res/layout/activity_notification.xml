@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="58dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#4296D8"
+        android:padding="12dp"
+        android:src="@drawable/ic_backbutton"/>
+    <TextView
+        android:id="@+id/tvNamePassenger"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginStart="50dp"
+        android:text="Thông báo"
+        android:textAlignment="center"
+        android:background="#4296D8" android:padding="10dp"
+        android:textColor="@color/white" android:textSize="20sp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/notificationListView"
+        android:layout_below="@id/backButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</RelativeLayout>

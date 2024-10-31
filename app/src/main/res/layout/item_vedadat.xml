@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="10dp"
+    android:background="@color/white">
+    <ImageView
+        android:id="@+id/img_ticket"
+        android:layout_width="70dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ticket"
+       />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/img_ticket"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="2dp"
+        android:orientation="vertical"
+        android:background="#CE90C3EC">
+        <TextView
+            android:id="@+id/placeNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/descriptionTextView2"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/giaVeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+</RelativeLayout>

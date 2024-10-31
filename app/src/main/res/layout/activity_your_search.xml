@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.YourSearchActivity"
+    android:background="@drawable/flightss">
+    <TextView
+        android:id="@+id/txthongtin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="80dp"
+        android:text="TÌM KIẾM CHUYẾN BAY"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        />
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="20dp"
+        android:background="@drawable/custom_edittext">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_gravity="fill_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+        <TextView
+            android:id="@+id/khoihanh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="ĐỊA ĐIỂM KHỞI HÀNH"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="normal|bold" />
+        <Spinner
+            android:id="@+id/fromEditText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:hint="Cất cánh từ"
+            android:textColorHint="#CFCACA"
+            android:textColor="@color/black"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="30dp"
+            />
+
+        <TextView
+            android:text="ĐỊA ĐIỂM ĐẾN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:textStyle="normal|bold"
+            android:textColor="@color/black"
+            />
+        <Spinner
+            android:id="@+id/toEditText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="Hạ cánh đến"
+            android:textColorHint="#CFCACA"
+            android:textColor="@color/black"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="30dp"/>
+        <TextView
+            android:text="NGÀY KHỞI HÀNH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/timekhoihanh"
+            android:textSize="15sp"
+            android:padding="10dp"
+            android:textStyle="normal|bold"
+            android:textColor="@color/black"
+            />
+        <EditText
+            android:id="@+id/fromTimeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="Chọn ngày khởi hành"
+            android:textColorHint="#CFCACA"
+            android:textColor="@color/black"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="30dp"/>
+        <TextView
+            android:text="NGÀY ĐẾN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/timeden"
+            android:textSize="15sp"
+            android:textStyle="normal|bold"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            />
+        <EditText
+            android:id="@+id/toTimeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="Chọn ngày đến"
+            android:textColorHint="#CFCACA"
+            android:textColor="@color/black"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="30dp"/>
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="40dp"
+            android:text="Tìm kiếm chuyến bay"
+            app:backgroundTint="@null"
+            android:background="@drawable/custom_button"/>
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottomNavigationView"
+        android:layout_marginEnd="10dp"
+        app:labelVisibilityMode="labeled"
+        android:background="@color/white"
+        app:menu="@menu/menu"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>
