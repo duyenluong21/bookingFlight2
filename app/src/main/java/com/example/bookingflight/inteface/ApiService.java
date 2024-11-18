@@ -9,6 +9,7 @@ import com.example.bookingflight.model.Pay;
 import com.example.bookingflight.model.PostTicket;
 import com.example.bookingflight.model.Result;
 import com.example.bookingflight.model.Shop;
+import com.example.bookingflight.model.Store;
 import com.example.bookingflight.model.TicketCount;
 import com.example.bookingflight.model.User;
 import com.example.bookingflight.model.Voucher;
@@ -37,7 +38,7 @@ public interface ApiService {
             .create();
 
     ApiService searchFlight = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.9/TTCS/app/")
+            .baseUrl("http://172.20.10.11/TTCS/app/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
@@ -121,6 +122,8 @@ public interface ApiService {
 
     @GET("api/readShopMap.php")
     Call<ApiResponse<List<Shop>>> getShop() ;
+    @GET("api/readShop.php")
+    Call<ApiResponse<List<Store>>> getStore() ;
 
     @GET("api/readPayById.php")
     Call<ApiResponse<List<Pay>>> getPayById(@Query("maKH") String maKH);

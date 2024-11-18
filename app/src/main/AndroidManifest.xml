@@ -121,6 +121,9 @@
         <activity
             android:name=".activity.NotificationActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.WebContentActivity"
+            android:exported="false" />
         <provider
             android:name=".activity.AirportSuggestion"
             android:authorities="com.example.bookingflight.activity.AirportSuggestion"

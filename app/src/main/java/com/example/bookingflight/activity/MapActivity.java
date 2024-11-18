@@ -2,6 +2,7 @@ package com.example.bookingflight.activity;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,8 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.graphics.Color;
+import android.location.Geocoder;
+import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,6 +20,7 @@ import android.provider.BaseColumns;
 import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -34,15 +38,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 
-
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookingflight.R;
+import com.example.bookingflight.adapter.StoreAdapter;
 import com.example.bookingflight.adapter.SuggestionAdapter;
 import com.example.bookingflight.model.LocationSuggestion;
 import com.example.bookingflight.model.Shop;
+import com.example.bookingflight.model.Store;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONArray;
@@ -52,6 +59,7 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.Polyline;
 
 import java.io.IOException;
@@ -60,8 +68,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
+//import okhttp3.Address;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -73,19 +83,22 @@ public class MapActivity extends AppCompatActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     private MapView mapView;
-    private ImageView backButton;
+    private ImageView backButton, suggest;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Location currentLocation;
     private RecyclerView suggestionList;
+    private RecyclerView storeList;
     private SuggestionAdapter suggestionAdapter;
+    private StoreAdapter storeAdapter;
     private List<String> suggestions = new ArrayList<>();
+    private List<Store> stores = new ArrayList<>();
     private List<LocationSuggestion> locationSuggestions = new ArrayList<>(); // List to store suggestions with coordinates
     private SearchView mapSearch;
-    private Marker currentMarker; // Marker for current location
-    private TextView locationName; // TextView để hiển thị tên vị trí
+    private Marker currentMarker;
+    private TextView locationName, distanceTextView;
     private RelativeLayout banner, upperBanner; // Banner chứa thông tin vị trí
     Button getDirectionsButton;
-    private double lastLat; // Thêm biến để lưu trữ vị trí trước đó
+    private double lastLat;
     private double lastLng;
     private double selectedDestinationLat;
     private double selectedDestinationLng;
@@ -114,9 +127,15 @@ public class MapActivity extends AppCompatActivity {
         turnIcon = findViewById(R.id.turnIcon);
         distance = findViewById(R.id.distance);
         roadInfo = findViewById(R.id.roadInfo);
+        suggest = findViewById(R.id.suggest);
         upperBanner.setVisibility(View.GONE);
+        // TextView để hiển thị tên vị trí
+        distanceTextView = findViewById(R.id.distanceTextView);
         hideUpperBanner();
-
+        storeList = findViewById(R.id.storeList);
+        storeList.setLayoutManager(new LinearLayoutManager(this));
+        StoreAdapter storeAdapter = new StoreAdapter(this, stores);
+        storeList.setAdapter(storeAdapter);
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         // Initialize RecyclerView for suggestions
@@ -128,12 +147,15 @@ public class MapActivity extends AppCompatActivity {
                 if (suggestion.getName().equals(selectedSuggestion)) {
                     double lat = suggestion.getLatitude();
                     double lng = suggestion.getLongitude();
+                    double currentLat = lastLat; // vĩ độ
+                    double currentLng = lastLng; // kinh độ
                     moveToLocation(lat, lng);
                     upperBanner.setVisibility(View.GONE);
                     showBanner(selectedSuggestion);
-                    // Lưu tọa độ đến từ gợi ý đã chọn
                     selectedDestinationLat = lat;
                     selectedDestinationLng = lng;
+                    double distance = calculateDistance(currentLat, currentLng, lat, lng);
+                    distanceTextView.setText(String.format("Khoảng cách: %.2f km", distance));
                     break;
                 }
             }
@@ -171,69 +193,79 @@ public class MapActivity extends AppCompatActivity {
         // Set up the map
         mapView.setTileSource(org.osmdroid.tileprovider.tilesource.TileSourceFactory.MAPNIK);
         mapView.setMultiTouchControls(true);
-        // Set up search listener
+        suggest.setOnClickListener(v -> {
+            getCurrentLocation();
+        });
         mapSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchLocations(query);
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText.isEmpty()) {
-                    // Khi người dùng xóa ký tự, ẩn gợi ý
                     suggestions.clear();
                     locationSuggestions.clear();
                     suggestionAdapter.notifyDataSetChanged();
                     suggestionList.setVisibility(View.GONE);  // Ẩn danh sách gợi ý
                     resetMapState(); // Ẩn upperBanner khi tìm kiếm rỗng
                 } else {
-                    // Nếu đang nhập văn bản, hãy ẩn upperBanner
                     hideUpperBanner();
                 }
                 return false;
             }
         });
-
-        // Tự động hiển thị gợi ý
-        mapSearch.setOnSearchClickListener(v -> {
-            hideUpperBanner();
-            if (currentLocation != null) {
-                if (!isSearching) {
-                    updateNearestShops();
-                }
-            } else {
-                Toast.makeText(MapActivity.this, "Vị trí hiện tại không khả dụng", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         mapSearch.setOnCloseListener(() -> {
             hideUpperBanner();
             suggestions.clear();
             suggestionAdapter.notifyDataSetChanged();
-            suggestionList.setVisibility(View.GONE);  // Ẩn danh sách gợi ý
+            double destinationLat = selectedDestinationLat; // vĩ độ
+            double destinationLng = selectedDestinationLng;
+            storeList.setVisibility(View.GONE);
             return false;
         });
+//        mapSearch.setOnClickListener(v -> onSearchClicked());
+    }
+    private void getCurrentLocation() {
+        // Kiểm tra quyền truy cập vị trí
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        } else {
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            // Lấy vị trí hiện tại
+            fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null)
+                    .addOnSuccessListener(this, location -> {
+                        if (location != null) {
+                            double currentLatitude = location.getLatitude();
+                            double currentLongitude = location.getLongitude();
+                            // Gọi hàm cập nhật khoảng cách
+                            updateStoreDistances(currentLatitude, currentLongitude);
+                        } else {
+                            Toast.makeText(this, "Không thể lấy vị trí hiện tại", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
     private void resetMapState() {
-        // Xóa các đường đi cũ
         mapView.getOverlays().clear(); // Xóa tất cả overlay trên bản đồ
-
         hideUpperBanner();
-
-        // Đặt lại trạng thái các biến
         suggestions.clear(); // Xóa danh sách gợi ý hiện tại
         upperBanner.setVisibility(View.GONE); // Đảm bảo banner trên được ẩn
         locationSuggestions.clear(); // Xóa danh sách gợi ý vị trí
         suggestionAdapter.notifyDataSetChanged(); // Cập nhật adapter để phản ánh trạng thái mới
     }
-
     private void moveToLocation(double lat, double lng) {
         // Lưu vị trí hiện tại trước khi di chuyển
-        lastLat = currentLocation.getLatitude();
-        lastLng = currentLocation.getLongitude();
-
+        if (currentLocation == null) {
+            runOnUiThread(() -> Toast.makeText(MapActivity.this, "Vị trí hiện tại không khả dụng", Toast.LENGTH_SHORT).show());
+            return;
+        }else {
+            lastLat = currentLocation.getLatitude();
+            lastLng = currentLocation.getLongitude();
+        }
         if (currentMarker != null) {
             mapView.getOverlays().remove(currentMarker); // Remove existing marker
         }
@@ -245,124 +277,140 @@ public class MapActivity extends AppCompatActivity {
         mapView.getController().setCenter(new GeoPoint(lat, lng));
         mapView.getController().setZoom(15.0); // Adjust zoom
     }
-    // Goi y 3 vi tri gan nhat
-    private void updateNearestShops() {
-        String url = "http://192.168.1.4/TTCS/app/api/readShopMap.php"; // URL lấy danh sách phòng vé
 
+    private double calculateDistance(double currentLat, double currentLng, double destinationLat, double destinationLng) {
+        final int R = 6371; // Radius of the Earth in km
+        double latDistance = Math.toRadians(destinationLat - currentLat);
+        double lngDistance = Math.toRadians(destinationLng - currentLng);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) +
+                Math.cos(Math.toRadians(currentLat)) * Math.cos(Math.toRadians(destinationLat)) *
+                        Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // returns the distance in kilometers
+    }
+
+
+    private void updateStoreDistances(final double currentLatitude, final double currentLongitude) {
+        if (stores == null) {
+            stores = new ArrayList<>(); // Initialize if not already initialized
+        }
+        Location currentLocation = new Location("currentLocation");
+        currentLocation.setLatitude(currentLatitude);
+        currentLocation.setLongitude(currentLongitude);
+        // API URL to fetch stores
+        String shopApiUrl = "http://172.20.10.11/TTCS/app/api/readShop.php"; // Replace with your actual API URL
         OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
+        Request request = new Request.Builder().url(shopApiUrl).build();
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onResponse(@NonNull okhttp3.Call call, @NonNull Response response) throws IOException {
+            public void onFailure(okhttp3.Call call, IOException e) {
+                runOnUiThread(() -> Toast.makeText(MapActivity.this, "Failed to fetch shop data", Toast.LENGTH_SHORT).show());
+            }
+            @Override
+            public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     String jsonData = response.body().string();
-                    JSONArray jsonArray;
                     try {
-                        jsonArray = new JSONArray(jsonData);
+                        // Parse JSON response
+                        JSONObject jsonResponse = new JSONObject(jsonData);
+                        JSONArray jsonArray = jsonResponse.getJSONArray("data"); // Extract the data array
 
-                        // Xóa danh sách cũ
-                        suggestions.clear();
-                        locationSuggestions.clear();
-
-                        // Kiểm tra xem có vị trí hiện tại hay không
-                        if (currentLocation == null) {
-                            runOnUiThread(() -> Toast.makeText(MapActivity.this, "Vị trí hiện tại không khả dụng", Toast.LENGTH_SHORT).show());
-                            return;
-                        }
-
-                        double currentLat = currentLocation.getLatitude();
-                        double currentLng = currentLocation.getLongitude();
-
-                        // Danh sách để lưu trữ các phòng vé gần nhất
-                        List<LocationSuggestion> nearestShops = new ArrayList<>();
-
+                        stores.clear();
+                        // Iterate through the list of shops and calculate distances
                         for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            String placeName = jsonObject.getString("tenShop");
-                            double latitude = jsonObject.getDouble("vido");
-                            double longitude = jsonObject.getDouble("kinhdo");
+                            JSONObject shop = jsonArray.getJSONObject(i);
+                            String vido = shop.getString("vido");
+                            String kinhdo = shop.getString("kinhdo");
+                            String diaChi = shop.getString("diaChi");
+                            String tenShop = shop.getString("tenShop");
 
-                            // Tính khoảng cách
-                            double distance = calculateDistance(currentLat, currentLng, latitude, longitude);
-                            nearestShops.add(new LocationSuggestion(placeName, latitude, longitude, distance)); // Lưu khoảng cách
-
-                            // Giới hạn khoảng cách là 50 km
-                            if (distance <= 50.0) {
-                                locationSuggestions.add(new LocationSuggestion(placeName, latitude, longitude));
+                            if (vido != null && kinhdo != null) {
+                                // Convert vido and kinhdo from String to double
+                                Location storeLocation = new Location("storeLocation");
+                                storeLocation.setLatitude(Double.parseDouble(vido));
+                                storeLocation.setLongitude(Double.parseDouble(kinhdo));
+                                float distanceInMeters = currentLocation.distanceTo(storeLocation);
+                                float distanceInKm = distanceInMeters / 1000;
+                                Store store = new Store();
+                                store.setDistance(distanceInKm); // Store the calculated distance
+                                store.setDiaChi(diaChi);
+                                store.setTenShop(tenShop);
+                                store.setVido(vido); // Set vido
+                                store.setKinhdo(kinhdo); // Set kinhdo
+                                stores.add(store); // Add the store to the list
                             }
                         }
-
-                        // Sắp xếp danh sách các phòng vé gần nhất theo khoảng cách
-                        Collections.sort(nearestShops, Comparator.comparingDouble(LocationSuggestion::getDistance));
-
-                        // Chỉ giữ lại 3 phòng vé gần nhất
-                        nearestShops = nearestShops.subList(0, Math.min(3, nearestShops.size()));
-
-                        // Cập nhật suggestions với các phòng vé gần nhất
-                        suggestions.clear(); // Xóa danh sách gợi ý cũ
-                        for (LocationSuggestion suggestion : nearestShops) {
-                            suggestions.add(suggestion.getName());
-                        }
-                        final List<LocationSuggestion> nearestShopsFinal = nearestShops;
-                        // Cập nhật adapter
+                        sortStoresByDistance();
                         runOnUiThread(() -> {
-                            suggestionAdapter.notifyDataSetChanged();
-                            suggestionList.setVisibility(View.VISIBLE); // Hiển thị danh sách gợi ý
-                            hideUpperBanner();
+                            if (storeAdapter == null) {
+                                storeAdapter = new StoreAdapter(MapActivity.this, stores);
+                                storeList.setAdapter(storeAdapter);
+                                storeList.setVisibility(View.VISIBLE);
+                                storeAdapter.setOnItemClickListener((vido, kinhdo, selectedSuggestion) -> {
+                                    moveToLocation(vido, kinhdo);
+                                    // Ẩn upper banner nếu không null
+                                    if (upperBanner != null) {
+                                        upperBanner.setVisibility(View.GONE);
+                                    }
+                                    // Hiển thị banner với thông tin nếu không null
+                                    if (selectedSuggestion != null) {
+                                        showBanner(selectedSuggestion);
+                                    }
+                                    storeList.setVisibility(View.GONE);
+                                });
+                            } else {
+                                storeAdapter.setStores(stores);
+                                storeList.setVisibility(View.VISIBLE);
+                                storeAdapter.setOnItemClickListener((vido, kinhdo, selectedSuggestion) -> {
+                                    moveToLocation(vido, kinhdo);
+                                    if (upperBanner != null) {
+                                        upperBanner.setVisibility(View.GONE);
+                                    }
+                                    if (selectedSuggestion != null) {
+                                        showBanner(selectedSuggestion);
+                                    }
+                                    // Lưu tọa độ
+                                    double currentLat = lastLat; // vĩ độ
+                                    double currentLng = lastLng;
+                                    selectedDestinationLat = vido;
+                                    selectedDestinationLng = kinhdo;
+                                    double distance = calculateDistance(currentLat, currentLng, vido, kinhdo);
+                                    distanceTextView.setText(String.format("Khoảng cách: %.2f km", distance));
+                                    storeList.setVisibility(View.GONE);
+                                });
+                            }
                         });
 
                     } catch (JSONException e) {
-                        e.printStackTrace();
-                        runOnUiThread(() -> Toast.makeText(MapActivity.this, "Error parsing response", Toast.LENGTH_SHORT).show());
+                        Log.e("SHOP_API_ERROR", "Error parsing shop data: " + e.getMessage());
+                        runOnUiThread(() -> Toast.makeText(MapActivity.this, "Error parsing shop data", Toast.LENGTH_SHORT).show());
                     }
-                } else {
-                    runOnUiThread(() -> Toast.makeText(MapActivity.this, "Failed to get shops", Toast.LENGTH_SHORT).show());
                 }
-            }
-
-            @Override
-            public void onFailure(@NonNull okhttp3.Call call, @NonNull IOException e) {
-                runOnUiThread(() -> Toast.makeText(MapActivity.this, "Failed to get shops", Toast.LENGTH_SHORT).show());
             }
         });
     }
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-        final int R = 6371; // Bán kính Trái Đất (kilomet)
-        double latDistance = Math.toRadians(lat2 - lat1);
-        double lonDistance = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = R * c; // chuyển đổi sang kilomet
-        return distance;
+
+
+    private void sortStoresByDistance() {
+        Collections.sort(stores, (store1, store2) -> Double.compare(store1.getDistance(), store2.getDistance()));
     }
-    // Lay vi tri hien tai
 
     private void getLastLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
                 if (location != null) {
                     currentLocation = location;
-                    Log.d("CurrentLocation", "Lat: " + currentLocation.getLatitude() + " Lng: " + currentLocation.getLongitude());
                     moveToCurrentLocation();
-
-                    // Gọi updateNearestShops() để tự động hiển thị gợi ý
-                    updateNearestShops();
-                } else {
-                    Toast.makeText(MapActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
+                    if (storeAdapter != null) {
+                        storeAdapter.setCurrentLocation(currentLocation);
+                    }
                 }
             });
         }
     }
     private void moveToCurrentLocation() {
-        // Lưu vị trí hiện tại trước khi di chuyển
         lastLat = currentLocation.getLatitude();
         lastLng = currentLocation.getLongitude();
-
         // Đánh dấu vị trí hiện tại
         if (currentMarker != null) {
             mapView.getOverlays().remove(currentMarker); // Xóa marker cũ
@@ -371,10 +419,8 @@ public class MapActivity extends AppCompatActivity {
         currentMarker.setPosition(new GeoPoint(lastLat, lastLng));
         currentMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
         mapView.getOverlays().add(currentMarker);
-
         moveToLocation(lastLat, lastLng); // Di chuyển đến vị trí hiện tại
     }
-    // Hàm hiển thị banner theo gợi ý
     private void showBanner(String name) {
         locationName.setText(name); // Cập nhật tên vị trí
         banner.setVisibility(View.VISIBLE); // Hiện banner
@@ -390,6 +436,7 @@ public class MapActivity extends AppCompatActivity {
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 getLastLocation();
+//                onSearchClicked();
             } else {
                 Toast.makeText(this, "Location permission is needed to use this feature", Toast.LENGTH_SHORT).show();
             }
@@ -399,7 +446,7 @@ public class MapActivity extends AppCompatActivity {
         hideUpperBanner();
         suggestions.clear();
         locationSuggestions.clear();
-        String url = "http://192.168.1.4/TTCS/app/api/readShopMap.php?q=" + query;
+        String url = "http://172.20.10.11/TTCS/app/api/readShopMap.php?q=" + query;
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -439,6 +486,7 @@ public class MapActivity extends AppCompatActivity {
                         runOnUiThread(() -> {
                             suggestionAdapter.notifyDataSetChanged();
                             suggestionList.setVisibility(View.VISIBLE);
+                            storeList.setVisibility(View.GONE);
                         });
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -2,32 +2,55 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ImageView
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="58dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="#4296D8"
-        android:padding="12dp"
-        android:src="@drawable/ic_backbutton"/>
 
-    <TextView
-        android:id="@+id/tvNamePassenger"
+    <!-- Nút Back -->
+    <RelativeLayout
+        android:id="@+id/header_map"
         android:layout_width="match_parent"
         android:layout_height="58dp"
-        android:layout_marginStart="50dp"
-        android:text="MyGoogleMaps"
-        android:background="#4296D8"
-        android:padding="10dp"
-        android:textColor="@color/white"
-        android:textSize="20sp"/>
+        android:background="#4296D8">
 
+        <!-- Nút Back -->
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="12dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/ic_backbutton"
+            android:contentDescription="Back button" />
+
+        <!-- Tiêu đề trang -->
+        <TextView
+            android:id="@+id/tvNamePassenger"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:text="MyGoogleMaps"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:textStyle="bold" />
+
+        <!-- Icon ở cuối header -->
+        <ImageView
+            android:id="@+id/suggest"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="12dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/lightbulb_24px"
+            app:tint="#fff"/>
+    </RelativeLayout>
+
+
+    <!-- Thanh tìm kiếm -->
     <SearchView
         android:id="@+id/mapSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/backButton"
+        android:layout_below="@+id/header_map"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
@@ -35,15 +58,24 @@
         android:background="@drawable/search_map"
         android:elevation="5dp"
         android:iconifiedByDefault="false"
-        android:queryHint="Search..."/>
-
+        android:queryHint="Search..." />
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/suggestionList"
+        android:id="@+id/storeList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/mapSearch"
         android:visibility="gone"
-        android:elevation="5dp"/> <!-- Thêm elevation để nổi lên trên map -->
+        android:elevation="5dp" />
+
+    <!-- RecyclerView hiển thị gợi ý tìm kiếm -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/suggestionList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/storeList"
+        android:visibility="gone"
+        android:elevation="5dp" />
+
 
     <!-- Bản đồ -->
     <org.osmdroid.views.MapView
@@ -51,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/suggestionList"
-        android:layout_above="@id/banner"/>
+        android:layout_above="@id/banner" />
 
     <!-- Banner phía dưới -->
     <RelativeLayout
@@ -60,6 +92,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="#FFFFFF"
+        android:padding="16dp"
+        android:elevation="5dp"
         android:visibility="gone">
 
         <TextView
@@ -68,8 +102,18 @@
             android:layout_height="wrap_content"
             android:text="Tên vị trí"
             android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp" />
+
+        <TextView
+            android:id="@+id/distanceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Khoảng cách: "
+            android:layout_below="@+id/locationName"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="8dp" />
 
         <Button
             android:id="@+id/getDirectionsButton"
@@ -99,7 +143,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true" />
 
         <TextView
             android:id="@+id/distance"
@@ -110,7 +154,7 @@
             android:textSize="16sp"
             android:layout_toEndOf="@id/turnIcon"
             android:layout_marginStart="10dp"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true" />
 
         <TextView
             android:id="@+id/roadInfo"
@@ -122,6 +166,7 @@
             android:textStyle="bold"
             android:layout_toEndOf="@id/distance"
             android:layout_marginStart="10dp"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true" />
     </RelativeLayout>
+
 </RelativeLayout>

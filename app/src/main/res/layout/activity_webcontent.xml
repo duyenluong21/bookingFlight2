@@ -26,6 +26,7 @@
         android:textSize="20sp" />
     <WebView
         android:id="@+id/webView"
+        android:backgroundTint="@color/white"
         android:layout_below="@+id/ttcanhan"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
