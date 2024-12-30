@@ -7,8 +7,11 @@ import com.example.bookingflight.model.BookTicket;
 import com.example.bookingflight.model.Mess;
 import com.example.bookingflight.model.Pay;
 import com.example.bookingflight.model.PostTicket;
+import com.example.bookingflight.model.PublicKeyRequest;
+import com.example.bookingflight.model.PublicKeyStaff;
 import com.example.bookingflight.model.Result;
 import com.example.bookingflight.model.Shop;
+import com.example.bookingflight.model.Staff;
 import com.example.bookingflight.model.Store;
 import com.example.bookingflight.model.TicketCount;
 import com.example.bookingflight.model.User;
@@ -18,10 +21,12 @@ import com.example.bookingflight.model.detailTicket;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -38,7 +43,7 @@ public interface ApiService {
             .create();
 
     ApiService searchFlight = new Retrofit.Builder()
-            .baseUrl("http://172.20.10.11/TTCS/app/")
+            .baseUrl("http://192.168.1.5/TTCS/app/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
@@ -127,4 +132,19 @@ public interface ApiService {
 
     @GET("api/readPayById.php")
     Call<ApiResponse<List<Pay>>> getPayById(@Query("maKH") String maKH);
+
+    @PUT("api/updatePublicKey.php")
+    Call<Void> updatePublicKey(@Query("maKH") String maKH, @Body PublicKeyRequest updateParams);
+
+    @GET("api/readPublicKeyStaff.php")
+    Call<ApiResponse<PublicKeyStaff>> getPublicKey(@Query("maNV") String maNV);
+
+    @GET("api/checkPublicKey.php")
+    Call<ResponseBody> checkIfUserHasPublicKey(@Query("maKH") String maKH);
+
+    @GET("api/readUserChat.php")
+    Call<ApiResponse<List<Staff>>> getListStaff();
+
+    @GET("api/readUser.php")
+    Call<ApiResponse<List<Staff>>> getStaff(@Query("maNV") String maNV);
 }

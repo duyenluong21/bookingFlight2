@@ -124,6 +124,9 @@
         <activity
             android:name=".activity.WebContentActivity"
             android:exported="false" />
+        <activity
+            android:name=".activity.ChatStaffActivity"
+            android:exported="false" />
         <provider
             android:name=".activity.AirportSuggestion"
             android:authorities="com.example.bookingflight.activity.AirportSuggestion"

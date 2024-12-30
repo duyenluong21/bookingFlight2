@@ -26,6 +26,7 @@ public class User implements Parcelable {
     private String soDT;
     private String loaiHanhKhach;
     private String ngayDangKy;
+    private String publicKey;
 
     public String getNgayDangKy() {
         return ngayDangKy;

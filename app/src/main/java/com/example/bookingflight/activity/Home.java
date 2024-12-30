@@ -128,8 +128,8 @@ public class Home extends AppCompatActivity {
                 } else if (itemId == R.id.club) {
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
                     String maKH = sessionManager.getMaKH();
-                    Intent myIntent1 = new Intent(Home.this, chatActivity.class);
-                    myIntent1.putExtra("maKH", maKH); // Truyền maKH qua Intent
+                    Intent myIntent1 = new Intent(Home.this, ChatStaffActivity.class);
+                    myIntent1.putExtra("maKH", maKH);
                     startActivity(myIntent1);
                     overridePendingTransition(0, 0);
                     return true;

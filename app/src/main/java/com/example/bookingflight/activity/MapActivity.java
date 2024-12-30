@@ -446,7 +446,7 @@ public class MapActivity extends AppCompatActivity {
         hideUpperBanner();
         suggestions.clear();
         locationSuggestions.clear();
-        String url = "http://172.20.10.11/TTCS/app/api/readShopMap.php?q=" + query;
+        String url = "http://192.168.1.5/TTCS/app/api/readShopMap.php?q=" + query;
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
