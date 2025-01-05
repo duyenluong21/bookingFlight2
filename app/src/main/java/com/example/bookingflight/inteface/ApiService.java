@@ -15,6 +15,7 @@ import com.example.bookingflight.model.Staff;
 import com.example.bookingflight.model.Store;
 import com.example.bookingflight.model.TicketCount;
 import com.example.bookingflight.model.User;
+import com.example.bookingflight.model.UserFingerprintRequest;
 import com.example.bookingflight.model.Voucher;
 import com.example.bookingflight.model.VoucherUsage;
 import com.example.bookingflight.model.detailTicket;
@@ -147,4 +148,8 @@ public interface ApiService {
 
     @GET("api/readUser.php")
     Call<ApiResponse<List<Staff>>> getStaff(@Query("maNV") String maNV);
+
+    @PUT("api/updateFingerprint.php")
+    Call<ResponseBody> registerFingerprint(@Query("maKH") String maKH, @Body UserFingerprintRequest request);
+
 }

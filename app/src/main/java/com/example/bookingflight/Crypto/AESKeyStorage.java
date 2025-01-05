@@ -42,16 +42,5 @@ public class AESKeyStorage {
         return new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
     }
 
-    /**
-     * Xóa khóa AES từ SharedPreferences.
-     *
-     * @param alias Alias của khóa
-     */
-    public static void deleteAESKey(Context context, String alias) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(AES_KEY_PREFIX + alias);
-        editor.apply();
-    }
 }
 

@@ -29,15 +29,6 @@ public class Mess implements Parcelable {
         this.encryptedMessage = encryptedMessage;
         this.fromCustomer = fromCustomer;
     }
-
-    // Constructor cho tin nhắn chưa mã hóa
-    public Mess(String maKH, String noiDung2, String noiDung1, String thoiGianGui) {
-        this.maKH = maKH;
-        this.noiDung2 = noiDung2;
-        this.thoiGianGui = thoiGianGui;
-        this.noiDung1 = noiDung1; // Tin nhắn đã nhận
-    }
-
     // Getter và Setter cho các trường mới
     public String getEncryptedMessage() {
         return encryptedMessage;
@@ -69,26 +60,6 @@ public class Mess implements Parcelable {
         return fromCustomer;
     }
 
-    public void setFromCustomer(boolean fromCustomer) {
-        this.fromCustomer = fromCustomer;
-    }
-
-    public boolean isAutoReply() {
-        return isAutoReply;
-    }
-
-    public void setAutoReply(boolean autoReply) {
-        isAutoReply = autoReply;
-    }
-
-    public String getMaTN() {
-        return maTN;
-    }
-
-    public void setMaTN(String maTN) {
-        this.maTN = maTN;
-    }
-
     public String getThoiGianGui() {
         return thoiGianGui;
     }
@@ -103,6 +74,22 @@ public class Mess implements Parcelable {
 
     public void setMaKH(String maKH) {
         this.maKH = maKH;
+    }
+
+    public String getMaNV() {
+        return maNV;
+    }
+
+    public void setMaNV(String maNV) {
+        this.maNV = maNV;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getNoiDung2() {
@@ -143,7 +130,9 @@ public class Mess implements Parcelable {
         noiDung2 = in.readString();
         encryptedAESKey = in.readString();
         encryptedMessage = in.readString();
-        decryptedMessage = in.readString(); // Đọc tin nhắn đã giải mã từ Parcel
+        decryptedMessage = in.readString();
+        maNV = in.readString();
+        fullname = in.readString();
     }
 
     public static final Creator<Mess> CREATOR = new Creator<Mess>() {
@@ -170,8 +159,10 @@ public class Mess implements Parcelable {
         dest.writeString(thoiGianGui);
         dest.writeString(maKH);
         dest.writeString(noiDung2);
-        dest.writeString(encryptedAESKey);  // Lưu trữ khóa AES đã mã hóa vào Parcel
-        dest.writeString(encryptedMessage); // Lưu trữ tin nhắn đã mã hóa
-        dest.writeString(decryptedMessage); // Lưu trữ tin nhắn đã giải mã
+        dest.writeString(encryptedAESKey);
+        dest.writeString(encryptedMessage);
+        dest.writeString(decryptedMessage);
+        dest.writeString(maNV);
+        dest.writeString(fullname);
     }
 }

@@ -1,12 +1,16 @@
 package com.example.bookingflight.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,19 +25,17 @@ import com.example.bookingflight.inteface.PublicKeyCheckCallback;
 import com.example.bookingflight.model.PublicKeyRequest;
 import com.example.bookingflight.model.User;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.io.IOException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -67,6 +69,7 @@ public class Login extends AppCompatActivity {
         editpassword = findViewById(R.id.password);
         btnLogin = findViewById(R.id.loginButton);
         signupText = findViewById(R.id.signupText);
+
         sessionManager = new SessionManager(getApplicationContext());
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +84,64 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        editpassword.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= (editpassword.getRight() - editpassword.getCompoundDrawables()[2].getBounds().width())) {
+                    authenticateFingerprint();
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
+
+    private void authenticateFingerprint() {
+        BiometricManager biometricManager = BiometricManager.from(this);
+
+        if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)
+                == BiometricManager.BIOMETRIC_SUCCESS) {
+            Executor executor = ContextCompat.getMainExecutor(this);
+
+            BiometricPrompt.AuthenticationCallback callback = new BiometricPrompt.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                    super.onAuthenticationSucceeded(result);
+                    Toast.makeText(Login.this, "Xác thực vân tay thành công!", Toast.LENGTH_SHORT).show();
+                    performLoginWithFingerprint();
+                }
+
+                @Override
+                public void onAuthenticationError(int errorCode, CharSequence errString) {
+                    super.onAuthenticationError(errorCode, errString);
+                    Toast.makeText(Login.this, "Lỗi: " + errString, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onAuthenticationFailed() {
+                    super.onAuthenticationFailed();
+                    Toast.makeText(Login.this, "Xác thực thất bại.", Toast.LENGTH_SHORT).show();
+                }
+            };
+
+            BiometricPrompt biometricPrompt = new BiometricPrompt(this, executor, callback);
+
+            BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                    .setTitle("Đăng nhập bằng vân tay")
+                    .setSubtitle("Xác thực vân tay để đăng nhập")
+                    .setNegativeButtonText("Hủy")
+                    .build();
+
+            biometricPrompt.authenticate(promptInfo);
+        } else {
+            Toast.makeText(this, "Thiết bị không hỗ trợ hoặc chưa thiết lập vân tay", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void performLoginWithFingerprint() {
+        Intent intent1 = new Intent(Login.this, Home.class);
+        startActivity(intent1);
+        finish();
+        Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
     }
 
     private void attemptLogin() {
@@ -113,17 +174,6 @@ public class Login extends AppCompatActivity {
                         Toast.makeText(Login.this, "Call Api error", Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
-
-    private KeyPair generateRSAKeyPair() {
-        try {
-            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-            keyPairGenerator.initialize(2048); // Độ dài khóa
-            return keyPairGenerator.generateKeyPair();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     private String convertPublicKeyToBase64(PublicKey publicKey) {
@@ -161,46 +211,6 @@ public class Login extends AppCompatActivity {
                 });
     }
 
-
-
-//    private void checkUserCredentials(String email, String enteredPassword) {
-//        for (User user : mListUser) {
-//            if (user.getEmail().equals(email)) {
-//                String salt = user.getSalt().trim();
-//                String hashedEnteredPassword = BCrypt.hashpw(enteredPassword, salt);
-//
-//                if (hashedEnteredPassword.equals(user.getPassword())) {
-//                    String maKH = user.getMaKH();
-//                    sessionManager.saveLoginDetails(email);
-//                    sessionManager.setMaKH(maKH);
-//
-//                    // Tạo cặp khóa RSA
-//                    KeyPair keyPair = generateRSAKeyPair();
-//                    if (keyPair != null) {
-//                        // Lưu private key vào SharedPreferences (hoặc nơi an toàn hơn)
-//                        PrivateKey privateKey = keyPair.getPrivate();
-//                        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-//                        SharedPreferences.Editor editor = sharedPreferences.edit();
-//                        editor.putString("privateKey", Base64.encodeToString(privateKey.getEncoded(), Base64.DEFAULT));
-//                        editor.apply();
-//
-//                        // Gửi public key lên server
-//                        String publicKeyBase64 = convertPublicKeyToBase64(keyPair.getPublic());
-//                        PublicKeyRequest publicKeyRequest = new PublicKeyRequest(publicKeyBase64);
-//                        uploadPublicKeyToServer(maKH, publicKeyRequest);
-//                    }
-//
-//                    // Chuyển sang màn hình Home
-//                    Intent intent = new Intent(Login.this, Home.class);
-//                    startActivity(intent);
-//                    finish();
-//                    return;
-//                }
-//            }
-//        }
-//
-//        Toast.makeText(Login.this, "Sai mật khẩu hoặc email", Toast.LENGTH_SHORT).show();
-//    }
 
     private void checkUserCredentials(String email, String enteredPassword) {
         for (User user : mListUser) {

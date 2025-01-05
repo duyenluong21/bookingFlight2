@@ -408,6 +408,7 @@ public class chatActivity extends AppCompatActivity {
         DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("Chats");
         String messageId = chatReference.child(chatId).push().getKey();
         if (messageId != null) {
+            Log.d("Debug", "maNV: " + maNV);
             Mess mess = new Mess(maKH, maNV, fullname, encryptedAESKey, sendTime, encryptedMessage, true);
             chatReference.child(chatId).child(messageId).setValue(mess)
                     .addOnCompleteListener(task -> {

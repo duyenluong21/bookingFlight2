@@ -47,7 +47,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.UserViewHolder
 
         holder.itemView.setOnClickListener(v -> {
             if (onUserClickListener != null) {
-                onUserClickListener.onStaffClick(staff, staff.getMaNV(), staff.getTenNV()); // Truyền maNV vào đây
+                onUserClickListener.onStaffClick(staff, staff.getMaNV(), staff.getTenNV());
             }
         });
     }

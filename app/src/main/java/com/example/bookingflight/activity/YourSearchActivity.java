@@ -103,7 +103,7 @@ public class YourSearchActivity extends AppCompatActivity {
                 } else if (itemId == R.id.club) {
                     SessionManager sessionManager = new SessionManager(getApplicationContext());
                     String maKH = sessionManager.getMaKH();
-                    Intent myintent1 = new Intent(YourSearchActivity.this, chatActivity.class);
+                    Intent myintent1 = new Intent(YourSearchActivity.this, ChatStaffActivity.class);
                     myintent1.putExtra("maKH", maKH); // Truyền maKH qua Intent
                     startActivity(myintent1);
                     overridePendingTransition(0, 0);

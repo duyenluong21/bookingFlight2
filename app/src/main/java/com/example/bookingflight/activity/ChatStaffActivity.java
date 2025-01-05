@@ -3,6 +3,8 @@ package com.example.bookingflight.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +31,7 @@ public class ChatStaffActivity extends AppCompatActivity {
     private List<Staff> staffList = new ArrayList<>();
 
     private String maKH;
+    private ImageView backButtonMess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +40,27 @@ public class ChatStaffActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rcv_chat);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        backButtonMess = findViewById(R.id.backButtonMess);
+        backButtonMess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatStaffActivity.this, Home.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("maKH")) {
             maKH = intent.getStringExtra("maKH");
             getStaffList();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getStaffList();
     }
 
     private void getStaffList() {

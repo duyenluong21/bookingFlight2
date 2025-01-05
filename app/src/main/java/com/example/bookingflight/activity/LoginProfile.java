@@ -89,7 +89,7 @@ public class LoginProfile extends AppCompatActivity {
             } else if (itemId == R.id.club) {
                 SessionManager sessionManager = new SessionManager(getApplicationContext());
                 String maKH = sessionManager.getMaKH();
-                Intent intent = new Intent(LoginProfile.this, chatActivity.class);
+                Intent intent = new Intent(LoginProfile.this, ChatStaffActivity.class);
                 intent.putExtra("maKH", maKH);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
