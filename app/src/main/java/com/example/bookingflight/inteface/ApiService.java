@@ -4,6 +4,7 @@ import com.example.bookingflight.activity.ApiResponse;
 import com.example.bookingflight.model.Ad;
 import com.example.bookingflight.model.Airport;
 import com.example.bookingflight.model.BookTicket;
+import com.example.bookingflight.model.LoginRequest;
 import com.example.bookingflight.model.Mess;
 import com.example.bookingflight.model.Pay;
 import com.example.bookingflight.model.PostTicket;
@@ -33,6 +34,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
@@ -44,13 +46,18 @@ public interface ApiService {
             .create();
 
     ApiService searchFlight = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.5/TTCS/app/")
+            .baseUrl("http://192.168.1.7/TTCS/app/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
 
+    @Headers("Content-Type: application/json")
     @POST("api/createAccount.php")
     Call<ApiResponse<List<User>>> postUser(@Body Map<String, String> userData);
+
+    @Headers("Content-Type: application/json")
+    @POST("api/postPassengerAccount.php")
+    Call<ApiResponse<User>> login(@Body LoginRequest loginRequest);
 
     @GET("api/readFlightApp.php")
     Call<ApiResponse<List<Result>>> searchPlace(@QueryMap Map<String, String> option);

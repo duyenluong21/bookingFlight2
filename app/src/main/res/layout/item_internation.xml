@@ -14,15 +14,11 @@
         android:padding="8dp"
         android:clickable="true"
         android:focusable="true">
-
-        <!-- Thêm hình ảnh của địa điểm -->
         <ImageView
             android:id="@+id/imageLocation"
             android:layout_width="match_parent"
             android:layout_height="190dp"
             android:scaleType="centerCrop"/>
-
-        <!-- Thêm tên địa điểm hoặc thông tin khác -->
         <TextView
             android:id="@+id/textLocation"
             android:layout_width="match_parent"

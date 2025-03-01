@@ -123,13 +123,20 @@
     </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/bottomNavigationView"
-        android:layout_marginEnd="10dp"
-        app:labelVisibilityMode="labeled"
-        android:background="@color/white"
-        app:menu="@menu/menu"
-        android:layout_alignParentBottom="true"/>
+        android:layout_margin="10dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="6dp"
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:id="@+id/bottomNavigationView"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/menu"/>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

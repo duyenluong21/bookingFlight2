@@ -87,12 +87,6 @@
             android:name=".activity.DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".model.Result"
-            android:exported="false" />
-        <activity
-            android:name=".retrofit.ResultActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.MainActivity"
             android:exported="false" />
         <activity
@@ -130,7 +124,16 @@
             android:name=".activity.ChatStaffActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.RegisterFingerprintActivity"
+            android:name=".activity.ChatBotActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.VerifyOtp"
+            android:exported="false" />
+        <activity
+            android:name=".activity.VerifyEmail"
+            android:exported="false" />
+        <activity
+            android:name=".retrofit.ResultActivity"
             android:exported="false" />
         <provider
             android:name=".activity.AirportSuggestion"

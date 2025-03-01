@@ -3,6 +3,8 @@ package com.example.bookingflight.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.AlertDialog;
@@ -22,9 +24,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bookingflight.R;
+import com.example.bookingflight.adapter.DomesticAdapter;
 import com.example.bookingflight.adapter.ImageSliderAdapter;
+import com.example.bookingflight.adapter.InternationAdapter;
 import com.example.bookingflight.inteface.ApiService;
 import com.example.bookingflight.model.Ad;
+import com.example.bookingflight.model.Location;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.squareup.picasso.Picasso;
 
@@ -35,7 +40,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Home extends AppCompatActivity {
+public class Home extends BaseActivity {
     BottomNavigationView bottomNavigationView;
     CardView locationCard, hanhliCard, mapCard, khuyenmaiCard;
     private SessionManager sessionManager;
@@ -67,16 +72,15 @@ public class Home extends AppCompatActivity {
         handler.postDelayed(runnable = () -> {
             int nextItem = viewPager2.getCurrentItem() + 1;
             if (nextItem >= adapter.getItemCount()) {
-                nextItem = 0; // Quay lại slide đầu tiên
+                nextItem = 0;
             }
             viewPager2.setCurrentItem(nextItem, true);
-            handler.postDelayed(runnable, 3000); // 3 giây đổi slide
+            handler.postDelayed(runnable, 3000);
         }, 3000);
-        sessionManager = new SessionManager(getApplicationContext()); // Khởi tạo SessionManager
+        sessionManager = new SessionManager(getApplicationContext());
         hanhliCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Hiển thị Dialog khi CardView được bấm
                 openDialog();
             }
         });
@@ -105,9 +109,7 @@ public class Home extends AppCompatActivity {
                 finish();
             }
         });
-        // Kiểm tra đăng nhập
         if (!sessionManager.isLoggedIn()) {
-            // Chuyển đến trang đăng nhập nếu chưa đăng nhập
             Intent intent = new Intent(Home.this, Login.class);
             startActivity(intent);
             finish();
@@ -123,13 +125,9 @@ public class Home extends AppCompatActivity {
                     overridePendingTransition(0, 0);
                     return true;
                 } else if (itemId == R.id.home) {
-                    // Xử lý sự kiện khi chọn mục "home"
                     return true;
                 } else if (itemId == R.id.club) {
-                    SessionManager sessionManager = new SessionManager(getApplicationContext());
-                    String maKH = sessionManager.getMaKH();
                     Intent myIntent1 = new Intent(Home.this, ChatStaffActivity.class);
-                    myIntent1.putExtra("maKH", maKH);
                     startActivity(myIntent1);
                     overridePendingTransition(0, 0);
                     return true;
@@ -142,29 +140,47 @@ public class Home extends AppCompatActivity {
                 return false;
             }
         });
+
+        RecyclerView recyclerView2 = findViewById(R.id.recycler_featured);
+        RecyclerView recyclerView = findViewById(R.id.recycler_popular);
+
+        List<Location> locationList = new ArrayList<>();
+        List<Location> locationList2 = new ArrayList<>();
+
+        locationList.add(new Location("Bắc Kinh", R.drawable.backinh));
+        locationList.add(new Location("Seoul", R.drawable.seoul));
+        locationList.add(new Location("Tokyo", R.drawable.tokyo));
+        locationList.add(new Location("Osaka", R.drawable.osaka));
+        InternationAdapter internationAdapter = new InternationAdapter(locationList, Home.this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setAdapter(internationAdapter);
+        locationList2.add(new Location("Hà Nội", R.drawable.hanoi));
+        locationList2.add(new Location("Hải Phòng", R.drawable.haiphong));
+        locationList2.add(new Location("Quảng Ninh", R.drawable.quangninh1));
+        locationList2.add(new Location("Ninh Bình", R.drawable.ninhbinh));
+        locationList2.add(new Location("Thành phố Huế", R.drawable.hue));
+        locationList2.add(new Location("Đà Nẵng", R.drawable.danang1));
+        locationList2.add(new Location("Thành phố Hồ Chí Minh", R.drawable.tphochiminh));
+        locationList2.add(new Location("Cần Thơ", R.drawable.cantho));
+        locationList2.add(new Location("Phú Quốc", R.drawable.phuquoc));
+
+        DomesticAdapter domesticAdapter = new DomesticAdapter(locationList2, Home.this);
+        recyclerView2.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView2.setAdapter(domesticAdapter);
     }
 
     private void openDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // Sử dụng layoutInflater để nạp giao diện từ tệp XML
         View dialogView = getLayoutInflater().inflate(R.layout.activity_luggage, null);
-
-        // Thiết lập nội dung cho Dialog
         builder.setView(dialogView);
-
-        // Tạo Dialog
         AlertDialog dialog = builder.create();
-
-        // Thiết lập sự kiện đóng Dialog
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                // Xử lý sự kiện khi Dialog được đóng
-                // (Bạn có thể thực hiện các hành động khác ở đây nếu cần)
+
             }
         });
 
-        // Hiển thị Dialog
         dialog.show();
 
     }
@@ -176,31 +192,22 @@ public class Home extends AppCompatActivity {
     }
 
     private void fetchAdData() {
-        // Gọi API để lấy dữ liệu quảng cáo
         ApiService.searchFlight.getAd().enqueue(new Callback<ApiResponse<List<Ad>>>() {
             @Override
             public void onResponse(Call<ApiResponse<List<Ad>>> call, Response<ApiResponse<List<Ad>>> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().getData() != null) {
-                    // Lấy danh sách quảng cáo từ phản hồi
                     List<Ad> adList = response.body().getData();
-
-                    // Kiểm tra nếu modal đã được hiển thị
                     SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-
                     boolean isAdShown = sharedPreferences.getBoolean(KEY_AD_SHOWN, false);
                     Log.d("AdShown", "Ad shown value: " + isAdShown);
-                    // Chỉ hiển thị modal nếu chưa hiển thị
                     if (!isAdShown && !adList.isEmpty()) {
                         showAdModal(adList);
                     }
-
-                    // Cập nhật dữ liệu cho adapter (cập nhật ViewPager2)
                     runOnUiThread(() -> {
-                        adapter.updateImageList(adList);  // Giả sử adapter có phương thức này để cập nhật danh sách ảnh
+                        adapter.updateImageList(adList);
 
                     });
                 } else {
-                    // Xử lý lỗi nếu phản hồi không thành công
                     Log.e("API Error", "Response unsuccessful or body is null");
                 }
             }
@@ -220,50 +227,36 @@ public class Home extends AppCompatActivity {
 
         AlertDialog adDialog = builder.create();
 
-        // Tìm các phần tử trong layout
         ImageView imgAd = dialogView.findViewById(R.id.imgAd);
         Button btnViewDetails = dialogView.findViewById(R.id.btnViewDetails);
         ImageButton btnClose = dialogView.findViewById(R.id.btnClose);
-
-        // Chọn một quảng cáo ngẫu nhiên từ danh sách
         int randomIndex = (int) (Math.random() * adList.size());
         Ad randomAd = adList.get(randomIndex);
-
-        // Hiển thị ảnh quảng cáo ngẫu nhiên
         loadImage(randomAd.getImg(), imgAd);
-
-        // Gán sự kiện cho nút Mua ngay
         btnViewDetails.setOnClickListener(v -> {
-            // Thực hiện hành động khi nhấn vào Mua ngay
             Intent intent = new Intent(Home.this , YourSearchActivity.class);
             startActivity(intent);
             finish();
         });
 
-        // Gán sự kiện cho nút đóng modal (X)
         btnClose.setOnClickListener(v -> {
             adDialog.dismiss();
-            // Lưu trạng thái đã hiển thị modal
             saveAdShownState();
         });
 
         adDialog.setOnCancelListener(dialogInterface -> saveAdShownState());
-
-        // Hiển thị modal
         adDialog.show();
     }
 
     private void loadImage(String imageUrl, ImageView imageView) {
-        // Load image using Picasso (make sure to add the dependency in build.gradle)
         Picasso.get().load(imageUrl).into(imageView);
     }
 
     private void saveAdShownState() {
-        // Lưu trạng thái đã hiển thị modal quảng cáo
         SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_AD_SHOWN, true);
-        editor.apply(); // Áp dụng thay đổi
+        editor.apply();
     }
 
 

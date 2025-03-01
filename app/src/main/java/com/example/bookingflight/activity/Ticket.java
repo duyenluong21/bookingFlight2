@@ -271,7 +271,7 @@ public class Ticket extends AppCompatActivity {
         }
     }
     private void redirectToPaymentPage(String order_id) {
-        String paymentUrl = "http://192.168.1.5/TTCS/vnpay_php/vnpay_pay.php?order_id=" + order_id;
+        String paymentUrl = "http://192.168.1.7/TTCS/vnpay_php/vnpay_pay.php?order_id=" + order_id;
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(paymentUrl));
         startActivity(browserIntent);
     }

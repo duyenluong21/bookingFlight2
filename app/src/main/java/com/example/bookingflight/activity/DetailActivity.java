@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookingflight.ApiServiceClient;
 import com.example.bookingflight.R;
 import com.example.bookingflight.adapter.ResultAdapter;
 import com.example.bookingflight.inteface.ApiService;
@@ -85,7 +86,8 @@ public class DetailActivity extends AppCompatActivity {
     // Hiển thị thông tin chuyến bay khách hàng vừa chọn
     private void searchPlace() {
         Map<String, String> options = new HashMap<>();
-        ApiService.searchFlight.searchPlace(options)
+        ApiService apiService = ApiServiceClient.getApiService(this);
+        apiService.searchPlace(options)
                 .enqueue(new Callback<ApiResponse<List<Result>>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<List<Result>>> call, Response<ApiResponse<List<Result>>> response) {
@@ -104,7 +106,8 @@ public class DetailActivity extends AppCompatActivity {
     // Hiển thị thông tin khách hàng
     private void getListUser() {
         Map<String, String> options = new HashMap<>();
-        ApiService.searchFlight.getListUser(options)
+        ApiService apiService = ApiServiceClient.getApiService(this);
+        apiService.getListUser(options)
                 .enqueue(new Callback<ApiResponse<List<User>>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<List<User>>> call, Response<ApiResponse<List<User>>> response) {

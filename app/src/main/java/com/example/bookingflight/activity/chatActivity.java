@@ -3,6 +3,7 @@ package com.example.bookingflight.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.security.keystore.KeyGenParameterSpec;
@@ -79,7 +80,7 @@ public class chatActivity extends AppCompatActivity {
     // Khai báo biến publicKey
     private PublicKey publicKey;
 
-    private String maKH, maNV;
+    private String maNV;
     private String fullNameInstance;
 
     ImageView backButton;
@@ -91,6 +92,8 @@ public class chatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String maKH = sharedPreferences.getString("maKH", null);
 
         backButton = findViewById(R.id.backButtonMess);
         editMess = findViewById(R.id.edit_mess);
@@ -112,9 +115,9 @@ public class chatActivity extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("maKH")) {
+        if (intent != null && maKH != null) {
             maNV = intent.getStringExtra("MA_NV");
-            maKH = intent.getStringExtra("maKH");
+//            maKH = intent.getStringExtra("maKH");
             getFullNameByMaKH(maKH, (context, fullname) -> {
                 if (fullname != null) {
                     sendMessage(context);
@@ -172,48 +175,39 @@ public class chatActivity extends AppCompatActivity {
     }
 
     private void sendMessage(Context context) {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String maKH = sharedPreferences.getString("maKH", null);
         try {
-            // Bước 1: Lấy nội dung tin nhắn từ EditText
             String messageContent = editMess != null ? editMess.getText().toString() : null;
             if (TextUtils.isEmpty(messageContent)) {
                 Log.e("SendMessage", "Message content is empty or EditText is null.");
                 return;
             }
-
-            // Bước 2: Xác định alias để lưu hoặc lấy khóa AES
             String recipientAlias = maKH + "_" + maNV;
             if (TextUtils.isEmpty(recipientAlias)) {
                 Log.e("SendMessage", "Recipient alias is invalid.");
                 return;
             }
-
-            // Bước 3: Gọi API để lấy Public Key của người nhận
             fetchPublicKeyFromServer(maNV, new PublicKeyCallback() {
                 @Override
                 public void onSuccess(String publicKeyString) {
                     try {
-                        // Bước 4: Lấy hoặc tạo khóa AES dùng chung
                         SecretKey aesKey = AESKeyStorage.getAESKey(context, recipientAlias);
                         if (aesKey == null) {
                             aesKey = AESUtil.generateAESKey(256);
                             AESKeyStorage.saveAESKey(context, recipientAlias, aesKey);
                         }
-
-                        // Bước 5: Mã hóa nội dung tin nhắn bằng AES
                         String encryptedMessage = AESUtil.encrypt(messageContent, aesKey);
                         if (TextUtils.isEmpty(encryptedMessage)) {
                             Log.e("SendMessage", "Encrypted message is empty.");
                             return;
                         }
-
-                        // Bước 6: Mã hóa khóa AES bằng Public Key của người nhận
                         PublicKey recipientPublicKey = RSAUtil.getPublicKeyFromString(publicKeyString);
                         byte[] aesKeyBytes = aesKey.getEncoded();
                         if (aesKeyBytes == null || aesKeyBytes.length == 0) {
                             Log.e("SendMessage", "AES key encoding returned null or empty.");
                             return;
                         }
-
                         String encryptedAESKey = RSAUtil.encryptWithPublicKey(
                                 Base64.encodeToString(aesKeyBytes, Base64.NO_WRAP),
                                 recipientPublicKey
@@ -222,19 +216,13 @@ public class chatActivity extends AppCompatActivity {
                             Log.e("SendMessage", "Encrypted AES key is empty.");
                             return;
                         }
-
-                        // Bước 7: Chuẩn bị thời gian gửi
                         String sendTime = getCurrentTime();
                         if (TextUtils.isEmpty(sendTime)) {
                             Log.e("SendMessage", "Send time is invalid.");
                             return;
                         }
-
-                        // Bước 8: Gửi tin nhắn và khóa AES đã mã hóa
                         addEncryptedMess(maKH, maNV, fullname, encryptedAESKey, sendTime, encryptedMessage);
                         Log.d("SendMessage", "Message sent successfully!");
-
-                        // Xóa nội dung tin nhắn trong EditText sau khi gửi
                         if (editMess != null) {
                             editMess.setText("");
                         }

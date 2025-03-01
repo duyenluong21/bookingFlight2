@@ -9,8 +9,8 @@
 
     <RelativeLayout
         android:id="@+id/Location"
-        android:layout_width="290dp"
-        android:layout_height="360dp"
+        android:layout_width="180dp"
+        android:layout_height="240dp"
         android:padding="8dp"
         android:clickable="true"
         android:focusable="true">
@@ -19,7 +19,7 @@
         <ImageView
             android:id="@+id/imageTravel"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="190dp"
             android:scaleType="centerCrop"/>
 
         <!-- Thêm tên địa điểm hoặc thông tin khác -->

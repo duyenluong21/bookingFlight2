@@ -6,6 +6,7 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
@@ -18,10 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.bookingflight.ApiServiceClient;
 import com.example.bookingflight.Crypto.KeyStoreHelper;
 import com.example.bookingflight.R;
 import com.example.bookingflight.inteface.ApiService;
 import com.example.bookingflight.inteface.PublicKeyCheckCallback;
+import com.example.bookingflight.model.LoginRequest;
 import com.example.bookingflight.model.PublicKeyRequest;
 import com.example.bookingflight.model.User;
 
@@ -30,6 +33,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.util.HashMap;
@@ -84,97 +88,8 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        editpassword.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                if (event.getRawX() >= (editpassword.getRight() - editpassword.getCompoundDrawables()[2].getBounds().width())) {
-                    authenticateFingerprint();
-                    return true;
-                }
-            }
-            return false;
-        });
     }
 
-    private void authenticateFingerprint() {
-        BiometricManager biometricManager = BiometricManager.from(this);
-
-        if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)
-                == BiometricManager.BIOMETRIC_SUCCESS) {
-            Executor executor = ContextCompat.getMainExecutor(this);
-
-            BiometricPrompt.AuthenticationCallback callback = new BiometricPrompt.AuthenticationCallback() {
-                @Override
-                public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
-                    super.onAuthenticationSucceeded(result);
-                    Toast.makeText(Login.this, "Xác thực vân tay thành công!", Toast.LENGTH_SHORT).show();
-                    performLoginWithFingerprint();
-                }
-
-                @Override
-                public void onAuthenticationError(int errorCode, CharSequence errString) {
-                    super.onAuthenticationError(errorCode, errString);
-                    Toast.makeText(Login.this, "Lỗi: " + errString, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onAuthenticationFailed() {
-                    super.onAuthenticationFailed();
-                    Toast.makeText(Login.this, "Xác thực thất bại.", Toast.LENGTH_SHORT).show();
-                }
-            };
-
-            BiometricPrompt biometricPrompt = new BiometricPrompt(this, executor, callback);
-
-            BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                    .setTitle("Đăng nhập bằng vân tay")
-                    .setSubtitle("Xác thực vân tay để đăng nhập")
-                    .setNegativeButtonText("Hủy")
-                    .build();
-
-            biometricPrompt.authenticate(promptInfo);
-        } else {
-            Toast.makeText(this, "Thiết bị không hỗ trợ hoặc chưa thiết lập vân tay", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void performLoginWithFingerprint() {
-        Intent intent1 = new Intent(Login.this, Home.class);
-        startActivity(intent1);
-        finish();
-        Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-    }
-
-    private void attemptLogin() {
-        String strEmail = editemail.getText().toString().trim();
-        String strPassword = editpassword.getText().toString().trim();
-
-        // Kiểm tra xem email và mật khẩu có được nhập không
-        if (strEmail.isEmpty() || strPassword.isEmpty()) {
-            Toast.makeText(Login.this, "Vui lòng nhập đầy đủ email và mật khẩu", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Gọi API để lấy danh sách người dùng
-        Map<String, String> options = new HashMap<>();
-        ApiService.searchFlight.getListUser(options)
-                .enqueue(new Callback<ApiResponse<List<User>>>() {
-                    @Override
-                    public void onResponse(Call<ApiResponse<List<User>>> call, Response<ApiResponse<List<User>>> response) {
-                        ApiResponse<List<User>> apiResponse = response.body();
-                        if (apiResponse != null && apiResponse.getData() != null) {
-                            mListUser = apiResponse.getData();
-                            checkUserCredentials(strEmail, strPassword); // Gọi trực tiếp hàm kiểm tra
-                        } else {
-                            Toast.makeText(Login.this, "Không tìm thấy dữ liệu người dùng", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ApiResponse<List<User>>> call, Throwable t) {
-                        Toast.makeText(Login.this, "Call Api error", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 
     private String convertPublicKeyToBase64(PublicKey publicKey) {
         return Base64.encodeToString(publicKey.getEncoded(), Base64.DEFAULT);
@@ -212,8 +127,7 @@ public class Login extends AppCompatActivity {
     }
 
 
-    private void checkUserCredentials(String email, String enteredPassword) {
-        for (User user : mListUser) {
+    private void checkUserCredentials(String email, String enteredPassword, User user) {
             if (user.getEmail().equals(email)) {
                 String salt = user.getSalt().trim();
                 String hashedEnteredPassword = BCrypt.hashpw(enteredPassword, salt);
@@ -254,19 +168,10 @@ public class Login extends AppCompatActivity {
                         } else {
                             Log.d("KeyStore", "Private key chưa được lưu trữ.");
                         }
-
-                        // Chuyển sang màn hình Home
-                        Intent intent = new Intent(Login.this, Home.class);
-                        startActivity(intent);
-                        finish();
-                        return;
                     });
                 }
             }
-        }
     }
-
-
 
     private void checkIfUserHasPublicKey(String maKH, PublicKeyCheckCallback callback) {
         ApiService.searchFlight.checkIfUserHasPublicKey(maKH)
@@ -299,7 +204,69 @@ public class Login extends AppCompatActivity {
                     }
                 });
     }
+    // JWT
+    private void attemptLogin() {
+        String strEmail = editemail.getText().toString().trim();
+        String strPassword = editpassword.getText().toString().trim();
 
+        // Kiểm tra email và password
+        if (strEmail.isEmpty() || strPassword.isEmpty()) {
+            Toast.makeText(Login.this, "Vui lòng nhập đầy đủ email và mật khẩu", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        // Tạo đối tượng LoginRequest
+        LoginRequest loginRequest = new LoginRequest(strEmail, strPassword);
+        ApiService apiService = ApiServiceClient.getApiService(this);
+        // Gọi API login
+        apiService.login(loginRequest).enqueue(new Callback<ApiResponse<User>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<User>> call, Response<ApiResponse<User>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<User> apiResponse = response.body();
+                    User user = apiResponse.getData();
+                    String token = apiResponse.getToken();
+                    checkUserCredentials(strEmail, strPassword, user);
+                    sessionManager.saveToken(token);
 
+                    if (user != null && token != null) {
+                        String maKH = user.getMaKH();
+                        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("jwt_token", token);
+                        editor.putString("maKH", maKH);
+                        editor.apply();
+
+                        runOnUiThread(() -> {
+
+                            Toast.makeText(Login.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(Login.this, Home.class);
+                            startActivity(intent);
+                            finish();
+
+                        });
+                    } else {
+                        runOnUiThread(() ->
+                                Toast.makeText(Login.this, "Sai email hoặc mật khẩu. Vui lòng kiểm tra lại!", Toast.LENGTH_SHORT).show()
+                        );
+                    }
+                } else if (response.code() == 401) {
+                    runOnUiThread(() ->
+                            Toast.makeText(Login.this, "Lỗi 401", Toast.LENGTH_SHORT).show()
+                    );
+                } else {
+                    runOnUiThread(() ->
+                            Toast.makeText(Login.this, "Lỗi phản hồi từ máy chủ", Toast.LENGTH_SHORT).show()
+                    );
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<User>> call, Throwable t) {
+                runOnUiThread(() ->
+                        Toast.makeText(Login.this, "Lỗi kết nối đến API: " + t.getMessage(), Toast.LENGTH_SHORT).show()
+                );
+            }
+        });
+    }
 }

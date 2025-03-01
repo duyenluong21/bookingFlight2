@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.bookingflight.ApiServiceClient;
 import com.example.bookingflight.R;
 import com.example.bookingflight.inteface.ApiService;
 import com.example.bookingflight.model.Airport;
@@ -214,8 +215,8 @@ public class YourSearchActivity extends AppCompatActivity {
 
     private void searchPlace(){
         Map<String, String> options = new HashMap<>();
-
-        ApiService.searchFlight.searchPlace(options)
+        ApiService apiService = ApiServiceClient.getApiService(this);
+        apiService.searchPlace(options)
                 .enqueue(new Callback<ApiResponse<List<Result>>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<List<Result>>> call, Response<ApiResponse<List<Result>>> response) {

@@ -8,6 +8,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -17,9 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bookingflight.ApiServiceClient;
 import com.example.bookingflight.R;
 import com.example.bookingflight.adapter.NotificationAdapter;
 import com.example.bookingflight.adapter.TicketAdapter;
+import com.example.bookingflight.inteface.ApiService;
 import com.example.bookingflight.model.Notification;
 import com.example.bookingflight.model.User;// Make sure this is imported
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -157,9 +160,9 @@ public class LoginProfile extends AppCompatActivity {
 
     private User getCurrentUser() {
         SessionManager sessionManager = new SessionManager(getApplicationContext());
-        String currentUserEmail = sessionManager.getEmail();
+        String currentUserEmail = sessionManager.getMaKH();
         for (User user : mListUser) {
-            if (currentUserEmail.equals(user.getEmail())) {
+            if (currentUserEmail.equals(user.getMaKH())) {
                 return user;
             }
         }
@@ -168,7 +171,8 @@ public class LoginProfile extends AppCompatActivity {
 
     private void getListUser() {
         Map<String, String> options = new HashMap<>();
-        searchFlight.getListUser(options)
+        ApiService apiService = ApiServiceClient.getApiService(this);
+        apiService.getListUser(options)
                 .enqueue(new Callback<ApiResponse<List<User>>>() {
                     @Override
                     public void onResponse(Call<ApiResponse<List<User>>> call, Response<ApiResponse<List<User>>> response) {
@@ -192,6 +196,10 @@ public class LoginProfile extends AppCompatActivity {
 
     private void performLogout() {
         SessionManager sessionManager = new SessionManager(getApplicationContext());
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("jwt_token");  // Xóa jwt_token
+        editor.apply();
         sessionManager.logout();
 
         Intent intent = new Intent(LoginProfile.this, Login.class);

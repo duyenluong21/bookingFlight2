@@ -175,7 +175,6 @@ public class MainActivity extends AppCompatActivity {
     private void handleFailure(Throwable t) {
         // Xử lý lỗi kết nối
         clearInputFields();
-        Toast.makeText(getApplicationContext(), "Lỗi kết nối", Toast.LENGTH_LONG).show();
         t.printStackTrace();
     }
 

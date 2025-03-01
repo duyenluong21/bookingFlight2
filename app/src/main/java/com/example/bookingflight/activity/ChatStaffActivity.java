@@ -1,6 +1,7 @@
 package com.example.bookingflight.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,7 +32,7 @@ public class ChatStaffActivity extends AppCompatActivity {
     private List<Staff> staffList = new ArrayList<>();
 
     private String maKH;
-    private ImageView backButtonMess;
+    private ImageView backButtonMess, chatBot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,9 @@ public class ChatStaffActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rcv_chat);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         backButtonMess = findViewById(R.id.backButtonMess);
+        chatBot = findViewById(R.id.chatBot);
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String maKH = sharedPreferences.getString("maKH", null);
         backButtonMess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,11 +54,21 @@ public class ChatStaffActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("maKH")) {
-            maKH = intent.getStringExtra("maKH");
+        chatBot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatStaffActivity.this, ChatBotActivity.class);
+//                intent.putExtra("maKH", maKH);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+//        Intent intent = getIntent();
+//        if (intent != null && intent.hasExtra("maKH")) {
+//            maKH = intent.getStringExtra("maKH");
             getStaffList();
-        }
+//        }
     }
 
     @Override
@@ -81,7 +95,7 @@ public class ChatStaffActivity extends AppCompatActivity {
                                 Intent intent = new Intent(ChatStaffActivity.this, chatActivity.class);
                                 intent.putExtra("MA_NV", maNV);
                                 intent.putExtra("TEN_NV", tenNV);
-                                intent.putExtra("maKH", maKH);
+//                                intent.putExtra("maKH", maKH);
                                 startActivity(intent);
                             }
                         };

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Profile extends AppCompatActivity {
-    ImageView backButton, fingerprint;
+    ImageView backButton;
     Button btnBooking ;
     private List<User> mListUser ;
 
@@ -26,7 +26,6 @@ public class Profile extends AppCompatActivity {
         mListUser = new ArrayList<>();
         setContentView(R.layout.activity_profile);
         backButton = findViewById(R.id.backButton);
-        fingerprint = findViewById(R.id.Fingerprint);
         btnBooking = findViewById(R.id.btnBooking);
         EditText txHovaTen = findViewById(R.id.txHovaTen);
         EditText txNgaySinh = findViewById(R.id.txNgaySinh);
@@ -44,15 +43,6 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        fingerprint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Profile.this, RegisterFingerprintActivity.class ) ;
-                intent.putExtra("user", user);
-                startActivity(intent);
-                finish();
-            }
-        });
         btnBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

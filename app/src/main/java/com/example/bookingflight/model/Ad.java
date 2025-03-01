@@ -19,7 +19,7 @@ public class Ad {
     }
 
     public String getImg() {
-        return "http://192.168.1.8/TTCS/uploads/quangCao/" + img;
+        return "http://172.20.10.11/TTCS/uploads/quangCao/" + img;
     }
 
     public void setImg(String img) {

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/arrowbg">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nhập email xác thực"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="100dp"
+        android:layout_marginBottom="20dp"/>
+
+    <EditText
+        android:id="@+id/emailInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email để nhận mã xác thực"
+        android:inputType="textEmailAddress"
+        android:padding="10dp"
+        android:background="@android:drawable/edit_text" />
+
+    <Button
+        android:id="@+id/btnSendOtp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nhận mã xác thực"
+        android:backgroundTint="@color/mdtp_accent_color_dark"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="20dp" />
+
+</LinearLayout>

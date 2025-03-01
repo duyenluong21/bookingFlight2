@@ -18,10 +18,24 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    packagingOptions {
+        exclude ("META-INF/DEPENDENCIES")
+        exclude ("META-INF/NOTICE")
+        exclude ("META-INF/LICENSE")
+        exclude ("META-INF/LICENSE.txt")
+        exclude ("META-INF/NOTICE.txt")
+        exclude ("META-INF/INDEX.LIST")
+        exclude ("META-INF/io.netty.versions.properties")
+        exclude ("META-INF/DEPENDENCIES")
+    }
     buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        getByName("release") {
+            isShrinkResources = true
+            isMinifyEnabled = true
+            proguardFiles(
+                    getDefaultProguardFile("proguard-android.txt"),
+                    "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -36,7 +50,6 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.android.material:material:1.10.0")
     implementation("com.android.volley:volley:1.2.1")
     implementation("com.google.firebase:firebase-database:21.0.0")
     testImplementation("junit:junit:4.13.2")
@@ -68,5 +81,13 @@ dependencies {
     implementation ("org.osmdroid:osmdroid-android:6.1.10")
 
     implementation ("androidx.biometric:biometric:1.1.0")
+    // Sendgrid
+    implementation ("com.sendgrid:sendgrid-java:4.7.2")
+
+    // chatbot
+    implementation ("com.google.cloud:google-cloud-dialogflow:4.35.0")
+    implementation ("com.google.auth:google-auth-library-oauth2-http:1.20.0")
+    implementation ("com.google.api.grpc:proto-google-cloud-dialogflow-v2:4.35.0")
+    implementation ("io.grpc:grpc-okhttp:1.42.1")
 
 }
